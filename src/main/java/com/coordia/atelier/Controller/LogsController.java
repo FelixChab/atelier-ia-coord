@@ -1,4 +1,4 @@
-package com.atelier.coord.Controller;
+package com.coordia.atelier.Controller;
 
 import org.springframework.web.bind.annotation.*;
 

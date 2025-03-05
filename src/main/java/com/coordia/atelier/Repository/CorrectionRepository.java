@@ -1,4 +1,12 @@
-package com.atelier.coord.Repository;
+package com.coordia.atelier.Repository;
 
-public class CorrectionRepository {
+import com.coordia.atelier.Entity.Correction;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
+
+public interface CorrectionRepository extends CrudRepository<Correction, Long> {
+
+    // TODO: CRUD
+
 }

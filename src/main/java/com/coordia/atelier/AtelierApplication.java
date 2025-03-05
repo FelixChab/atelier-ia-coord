@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AtelierApplication {
 
 	public static void main(String[] args) {
+		System.out.println("[START] API is running...");
 		SpringApplication.run(AtelierApplication.class, args);
 	}
 

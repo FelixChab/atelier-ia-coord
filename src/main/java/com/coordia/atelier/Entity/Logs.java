@@ -1,5 +1,6 @@
-package com.atelier.coord.Entity;
+package com.coordia.atelier.Entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -9,20 +10,28 @@ import lombok.Setter;
 
 import java.util.Date;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LogsEntity {
+public class Logs {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String requestText; // contenu envoyé à l'IA
-    private String responseText; // contenu généré par l'IA
-
-    private boolean status; // SUCCESS ou FAILED (true ou false)
+    private String requestText;
+    private String responseText;
+    private boolean status;
     private String errorMessage; // message d'erreur si status = FAILED
     private Date timestamp; // date du traitement IA
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
