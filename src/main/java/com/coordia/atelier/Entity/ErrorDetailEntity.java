@@ -1,4 +1,4 @@
-package com.atelier.coord.Entity;
+package com.coordia.atelier.Entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

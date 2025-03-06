@@ -1,16 +1,56 @@
-package com.atelier.coord.Controller;
+package com.coordia.atelier.Controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.coordia.atelier.Dto.CorrectionRequest;
+import com.coordia.atelier.Dto.CorrectionResponse;
+import com.coordia.atelier.Service.CorrectionService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/corrections")
+@CrossOrigin(origins = "*")
 public class CorrectionController {
 
-    @PostMapping()
-    public void submitText() {
-        // TODO: POST - envoi du texte à corriger
+    private final CorrectionService correctionService;
+
+    public CorrectionController(CorrectionService correctionService) {
+        this.correctionService = correctionService;
     }
 
+    @PostMapping
+    public ResponseEntity<CorrectionResponse> correctText(@Valid @RequestBody CorrectionRequest request) {
+        CorrectionResponse response = correctionService.correctText(request);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Endpoint pour récupérer une correction par son ID
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<CorrectionResponse> getCorrectionById(@PathVariable UUID id) {
+        CorrectionResponse response = correctionService.getCorrectionById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * Endpoint pour récupérer l'historique des corrections
+     */
+    @GetMapping
+    public ResponseEntity<Object> getCorrectionHistory() {
+        List<CorrectionResponse> history = correctionService.getCorrectionHistory();
+        return ResponseEntity.ok(history);
+    }
+
+    /**
+     * Endpoint pour rechercher des corrections par texte
+     */
+    @GetMapping("/search")
+    public ResponseEntity<Object> searchCorrections(@RequestParam String query) {
+        List<CorrectionResponse> results = correctionService.searchCorrections(query);
+        return ResponseEntity.ok(results);
+    }
 }

@@ -1,4 +1,4 @@
-package com.atelier.coord.Entity;
+package com.coordia.atelier.Entity;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ public class CorrectionEntity {
     private String processedText; // texte corrigé par l'IA
 
     @ElementCollection
-    private List<ErrorDetailEntity> errorDetails; // infos erreurs
+    private List<com.coordia.atelier.Entity.ErrorDetailEntity> errorDetails; // infos erreurs
     private int readabilityScore; // score global du texte
 
     public void setId(Long id) {
@@ -39,3 +39,4 @@ public class CorrectionEntity {
     // TODO
 
 }
+
