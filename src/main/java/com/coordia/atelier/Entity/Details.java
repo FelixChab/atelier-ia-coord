@@ -7,9 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class Details {
@@ -18,15 +18,18 @@ public class Details {
     private Long id;
 
     private Types type;
+
     private String error;
+
     private String suggestion;
+
     private Severities severity;
 
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getId() {
-        return id;
-    }
+    public void setType(Types type) { this.type = type; }
+    public void setError(String error) { this.error = error; }
+    public void setSuggestion(String suggest) { this.suggestion = suggest; }
+    public void setSeverity(Severities severity) { this.severity = severity; }
 }
