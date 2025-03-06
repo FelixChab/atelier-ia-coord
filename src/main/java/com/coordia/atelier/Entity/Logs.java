@@ -24,7 +24,7 @@ public class Logs {
     private String requestText;
     private String responseText;
     private boolean status;
-    private String errorMessage; // message d'erreur si status = FAILED
+    private String errorMessage; // Message d'erreur si status = FAILED
     private Date timestamp; // date du traitement IA
 
     public void setId(Long id) {
