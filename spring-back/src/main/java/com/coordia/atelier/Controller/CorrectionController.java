@@ -1,43 +1,56 @@
 package com.coordia.atelier.Controller;
 
-import com.coordia.atelier.Entity.Correction;
+import com.coordia.atelier.Dto.CorrectionRequest;
+import com.coordia.atelier.Dto.CorrectionResponse;
 import com.coordia.atelier.Service.CorrectionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/corrections")
+@CrossOrigin(origins = "*")
 public class CorrectionController {
 
-    @Autowired
-    private CorrectionService correctionService;
+    private final CorrectionService correctionService;
 
-    @PostMapping()
-    public Correction saveCorrection(@RequestBody Correction correction) {
-        return correctionService.saveCorrection(correction);
+    public CorrectionController(CorrectionService correctionService) {
+        this.correctionService = correctionService;
     }
 
-    @GetMapping
-    public List<Correction> getAllCorrection() {
-        return correctionService.getAllCorrections();
+    @PostMapping
+    public ResponseEntity<CorrectionResponse> correctText(@Valid @RequestBody CorrectionRequest request) {
+        CorrectionResponse response = correctionService.correctText(request);
+        return ResponseEntity.ok(response);
     }
 
+    /**
+     * Endpoint pour récupérer une correction par son ID
+     */
     @GetMapping("/{id}")
-    public Optional<Correction> getCorrectionById(@PathVariable("id") Long id) {
-        return correctionService.getCorrectionById(id);
+    public ResponseEntity<CorrectionResponse> getCorrectionById(@PathVariable UUID id) {
+        CorrectionResponse response = correctionService.getCorrectionById(id);
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}")
-    public Correction updateCorrection(@RequestBody Correction correction, @PathVariable("id") Long id) {
-        return correctionService.updateCorrection(correction, id);
+    /**
+     * Endpoint pour récupérer l'historique des corrections
+     */
+    @GetMapping
+    public ResponseEntity<Object> getCorrectionHistory() {
+        List<CorrectionResponse> history = correctionService.getCorrectionHistory();
+        return ResponseEntity.ok(history);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCorrection(@PathVariable("id") Long id) {
-        correctionService.deleteCorrection(id);
+    /**
+     * Endpoint pour rechercher des corrections par texte
+     */
+    @GetMapping("/search")
+    public ResponseEntity<Object> searchCorrections(@RequestParam String query) {
+        List<CorrectionResponse> results = correctionService.searchCorrections(query);
+        return ResponseEntity.ok(results);
     }
-
 }
