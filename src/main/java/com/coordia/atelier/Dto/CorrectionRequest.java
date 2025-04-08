@@ -15,9 +15,9 @@ public class CorrectionRequest {
     @Size(min = 1, max = 10000, message = "Le texte doit contenir entre 1 et 10000 caractères")
     private String text;
 
-    private boolean checkGrammar = true;
-    private boolean checkSpelling = true;
-    private boolean checkPunctuation = true;
-    private boolean suggestSynonyms = false;
+    private boolean checkGrammar;
+    private boolean checkSpelling;
+    private boolean checkPunctuation;
+    private boolean suggestSynonyms;
 }
 
