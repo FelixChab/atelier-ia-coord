@@ -1,5 +1,4 @@
 
-
 <template>
   <div class="spellchecker-form">
     <h2>Correcteur d'orthographe et de grammaire</h2>
@@ -12,7 +11,12 @@
           placeholder="Écrivez ou collez votre texte ici..."
           rows="8"
           :disabled="loading"
+          @input="debouncedAnalyze"
       ></textarea>
+
+      <div v-if="autoSaveStatus" class="auto-save-status">
+        {{ autoSaveStatus }}
+      </div>
     </div>
 
     <div class="check-options">
@@ -67,17 +71,20 @@
       <p>{{ error }}</p>
     </div>
 
-    <div v-if="result" class="result-section">
+    <div v-if="loading" class="loading-message">
+      <p>Analyse en cours...</p>
+    </div>
+    <div v-if="!loading && result" class="result-section">
       <div class="result-header">
         <h3>Texte corrigé</h3>
         <div class="quality-indicator">
           <span class="quality-label">Qualité:</span>
           <div class="quality-dots">
             <span
-                v-for="n in 5"
+                v-for="n in 10"
                 :key="n"
                 class="quality-dot"
-                :class="{ active: n <= Math.ceil(result.qualityScore / 2) }"
+                :class="{ active: n <= Math.ceil(result.qualityScore) }"
             ></span>
           </div>
         </div>
@@ -93,11 +100,8 @@
               {{ correction.type || 'Correction' }}
             </div>
             <div class="correction-content">
-              <span class="original">{{ correction.original }}</span> →
-              <span class="corrected">{{ correction.corrected }}</span>
-            </div>
-            <div v-if="correction.explanation" class="correction-explanation">
-              {{ correction.explanation }}
+              <span class="original">{{ correction.original }} →</span>
+              <span class="explanation" v-if="correction.explanation">{{ correction.explanation }}</span>
             </div>
           </li>
         </ul>
@@ -107,7 +111,8 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onUnmounted } from 'vue'
+import "@/assets/styles/spellcheckerForm.css"
 
 export default {
   name: 'SpellcheckerForm',
@@ -117,6 +122,10 @@ export default {
     const loading = ref(false)
     const error = ref(null)
     const result = ref(null)
+    const autoSaveStatus = ref('')
+
+    // Debounce timer reference
+    let debounceTimer = null
 
     const options = reactive({
       checkGrammar: true,
@@ -129,7 +138,28 @@ export default {
       return textInput.value.trim().length > 0
     })
 
-    function checkText() {
+    // Function to analyze text with debounce
+    function debouncedAnalyze() {
+      // Clear any existing timer
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+        autoSaveStatus.value = 'En attente...'
+      }
+
+      // Only proceed if there's valid text
+      if (!isValid.value) {
+        autoSaveStatus.value = ''
+        return
+      }
+
+      // Set a new timer
+      debounceTimer = setTimeout(() => {
+        autoSaveStatus.value = 'Analyse en cours...'
+        checkText(true) // Pass true to indicate this is an auto-save
+      }, 2000) // 2 seconds delay
+    }
+
+    function checkText(isAutoSave = false) {
       if (!isValid.value) return
 
       loading.value = true
@@ -141,16 +171,29 @@ export default {
           text: textInput.value,
           parameters: {
             ...options
-          }
+          },
+          isAutoSave // Add this flag to indicate if it's an auto-save
         }
 
         // Emit event to parent component to handle the API call
         emit('check-text', payload)
 
+        if (isAutoSave) {
+          // Update status for auto-save
+          setTimeout(() => {
+            autoSaveStatus.value = 'Analyse automatique terminée'
+            // Clear the status after a few seconds
+            setTimeout(() => {
+              autoSaveStatus.value = ''
+            }, 3000)
+          }, 500)
+        }
+
       } catch (err) {
         console.error('Error in form submission:', err)
         error.value = 'Une erreur est survenue lors de la vérification du texte.'
         loading.value = false
+        autoSaveStatus.value = 'Échec de l\'analyse automatique'
       }
     }
 
@@ -162,11 +205,21 @@ export default {
     function setError(errorMessage) {
       error.value = errorMessage
       loading.value = false
+      if (autoSaveStatus.value) {
+        autoSaveStatus.value = 'Échec de l\'analyse automatique'
+      }
     }
 
+    // Clear any pending timers when component is unmounted
+    onUnmounted(() => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer)
+      }
+    })
+
+    // Other functions remain the same
     function formatCorrectedText(text) {
       if (!text) return ''
-      // The corrected text contains markdown-style formatting, so we'll render it as HTML
       return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     }
 
@@ -189,8 +242,10 @@ export default {
       loading,
       error,
       result,
+      autoSaveStatus,
       isValid,
       checkText,
+      debouncedAnalyze,
       updateResult,
       setError,
       formatCorrectedText,
@@ -199,258 +254,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.spellchecker-form {
-  background-color: white;
-  border-radius: 10px;
-  padding: 30px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-}
-
-h2 {
-  color: #3f51b5;
-  margin-bottom: 10px;
-  font-size: 1.8rem;
-  text-align: center;
-}
-
-.subtitle {
-  text-align: center;
-  color: #757575;
-  margin-bottom: 25px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-textarea {
-  width: 100%;
-  padding: 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 16px;
-  resize: vertical;
-  transition: border-color 0.3s;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-textarea:focus {
-  outline: none;
-  border-color: #3f51b5;
-  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
-}
-
-.check-options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.options-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.checkbox-item {
-  display: flex;
-  align-items: center;
-}
-
-.checkbox-item input {
-  margin-right: 8px;
-}
-
-.check-button {
-  background-color: #3f51b5;
-  color: white;
-  border: none;
-  padding: 12px 30px;
-  font-size: 16px;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-weight: 600;
-}
-
-.check-button:hover {
-  background-color: #303f9f;
-}
-
-.check-button:disabled {
-  background-color: #bdbdbd;
-  cursor: not-allowed;
-}
-
-.error-message {
-  background-color: #ffebee;
-  color: #c62828;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.result-section {
-  background-color: #f5f7ff;
-  border-radius: 8px;
-  padding: 20px;
-  margin-top: 25px;
-}
-
-.result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-h3 {
-  color: #3f51b5;
-  font-size: 1.4rem;
-  margin: 0;
-}
-
-.quality-indicator {
-  display: flex;
-  align-items: center;
-}
-
-.quality-label {
-  margin-right: 10px;
-  color: #757575;
-}
-
-.quality-dots {
-  display: flex;
-  gap: 5px;
-}
-
-.quality-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #e0e0e0;
-}
-
-.quality-dot.active {
-  background-color: #4caf50;
-}
-
-.corrected-text {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  border-left: 4px solid #4caf50;
-  margin-bottom: 20px;
-  line-height: 1.6;
-}
-
-.correction-details {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-h4 {
-  color: #3f51b5;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
-}
-
-.corrections-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.correction-item {
-  padding: 12px 0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.correction-item:last-child {
-  border-bottom: none;
-}
-
-.correction-type {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  margin-bottom: 8px;
-  background-color: #e0e0e0;
-  color: #424242;
-}
-
-.correction-type.grammar {
-  background-color: #e3f2fd;
-  color: #1565c0;
-}
-
-.correction-type.spelling {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.correction-type.punctuation {
-  background-color: #fff3e0;
-  color: #e65100;
-}
-
-.correction-type.synonym {
-  background-color: #f3e5f5;
-  color: #7b1fa2;
-}
-
-.correction-content {
-  margin-bottom: 8px;
-}
-
-.original {
-  color: #e53935;
-  text-decoration: line-through;
-}
-
-.corrected {
-  color: #43a047;
-  font-weight: 600;
-}
-
-.correction-explanation {
-  font-size: 0.9rem;
-  color: #757575;
-  font-style: italic;
-}
-
-@media (max-width: 768px) {
-  .spellchecker-form {
-    padding: 20px;
-  }
-
-  .check-options {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .options-container {
-    margin-bottom: 15px;
-  }
-
-  .check-button {
-    width: 100%;
-  }
-
-  .result-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .quality-indicator {
-    margin-top: 10px;
-  }
-}
-</style>

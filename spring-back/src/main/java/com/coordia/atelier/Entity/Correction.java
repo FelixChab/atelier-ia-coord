@@ -1,4 +1,4 @@
-package com.coordia.atelier.Model;
+package com.coordia.atelier.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

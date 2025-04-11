@@ -78,7 +78,7 @@ footer {
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #121212;
-        color: black;
+        color: white;
     }
 
     h1 {

@@ -33,9 +33,13 @@ build/
 .vscode/
 
 # Backend
-/backend/target/
-/backend/.mvn/
-/backend/.idea/
+/spring-back/target/
+/spring-back/.mvn/
+/spring-back/.idea/
+/spring-back/src/main/resources/.env
+*.applcation.properties
+*.properties
+/spring-back/src/main/resources/application.properties
 
 # Frontend
 /frontend/node_modules/

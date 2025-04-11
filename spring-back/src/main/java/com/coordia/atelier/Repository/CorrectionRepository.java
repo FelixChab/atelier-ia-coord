@@ -1,6 +1,6 @@
 package com.coordia.atelier.Repository;
 
-import com.coordia.atelier.Model.Correction;
+import com.coordia.atelier.Entity.Correction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

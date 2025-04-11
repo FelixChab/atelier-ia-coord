@@ -1,6 +1,6 @@
 package com.coordia.atelier.Service;
 
-import com.coordia.atelier.Model.InteractionLog;
+import com.coordia.atelier.Entity.InteractionLog;
 import com.coordia.atelier.Repository.LogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

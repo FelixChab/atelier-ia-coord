@@ -24,7 +24,7 @@ export default {
       try {
         // Make API call to the French analysis endpoint
         const response = await axios.post(
-            "http://localhost:8080/api/corrections",
+            "http://localhost:8081/api/corrections",
             payload
         );
 
@@ -63,14 +63,12 @@ export default {
   <div id="app">
     <header>
       <h1>Correcteur d'orthographe et de grammaire - Français</h1>
-      <p class="tagline">Le correcteur français le plus précis au monde</p>
+      <p class="tagline">Le correcteur français le moins précis au monde</p>
     </header>
 
     <main>
-      <!-- Use the SpellcheckerForm component -->
       <spellchecker-form ref="spellcheckerForm" @check-text="handleCheckText" />
 
-      <!-- Use the AnalysisHistory component -->
       <analysis-history
           :refresh-trigger="historyRefreshTrigger"
           @item-deleted="handleHistoryItemDeleted"

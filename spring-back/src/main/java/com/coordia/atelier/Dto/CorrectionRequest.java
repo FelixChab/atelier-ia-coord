@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -15,9 +16,16 @@ public class CorrectionRequest {
     @Size(min = 1, max = 10000, message = "Le texte doit contenir entre 1 et 10000 caractères")
     private String text;
 
-    private boolean checkGrammar;
-    private boolean checkSpelling;
-    private boolean checkPunctuation;
-    private boolean suggestSynonyms;
+    @Getter
+    private boolean checkGrammar = false;
+
+    @Getter
+    private boolean checkSpelling = false;
+
+    @Getter
+    private boolean checkPunctuation = false;
+
+    @Getter
+    private boolean suggestSynonyms = false;
 }
 

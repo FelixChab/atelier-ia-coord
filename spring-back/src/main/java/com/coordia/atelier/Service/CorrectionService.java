@@ -6,7 +6,7 @@ import com.coordia.atelier.Dto.CorrectionResponse.CorrectionDetail;
 import com.coordia.atelier.Dto.CorrectionResponse.CorrectionStatus;
 import com.coordia.atelier.Dto.CorrectionResponse.CorrectionType;
 import com.coordia.atelier.Exception.CorrectionException;
-import com.coordia.atelier.Model.Correction;
+import com.coordia.atelier.Entity.Correction;
 import com.coordia.atelier.Repository.CorrectionRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,11 +36,15 @@ public class CorrectionService {
     @Transactional
     public CorrectionResponse correctText(CorrectionRequest request) {
         String originalText = request.getText();
+        Boolean checkGrammar = request.isCheckGrammar();
+        Boolean checkSpelling = request.isCheckSpelling();
+        Boolean checkPunctuation = request.isCheckPunctuation();
+        Boolean suggestSynonyms = request.isSuggestSynonyms();
         log.info("Nouvelle demande de correction pour un texte de {} caractères", originalText.length());
 
         try {
             // Appel au service IA pour la correction
-            String aiResponse = correctionAIService.corrigerTexte(originalText);
+            String aiResponse = correctionAIService.corrigerTexte(originalText, checkGrammar, checkSpelling, checkPunctuation, suggestSynonyms);
 
             // Extraction du texte corrigé et des détails de correction
             String correctedText = extractCorrectedText(aiResponse);
@@ -48,9 +52,7 @@ public class CorrectionService {
 
             // Calcul du nombre d'erreurs et du score de qualité
             int errorCount = correctionDetails.size();
-            double qualityScore = calculateQualityScore(originalText, errorCount);
-
-            log.info("Texte corrigé avec {} erreurs trouvées, score de qualité: {}", errorCount, qualityScore);
+            int qualityScore = calculateQualityScore(originalText, errorCount);
 
             // Création de l'entité Correction pour la base de données
             Correction correction = new Correction();
@@ -116,9 +118,7 @@ public class CorrectionService {
         }
     }
 
-    /**
-     * Récupère l'historique des corrections
-     */
+    // Récupère l'historique des corrections
     public List<CorrectionResponse> getCorrectionHistory() {
         List<Correction> corrections = correctionRepository.findAllByOrderByCreatedAtDesc();
         List<CorrectionResponse> responses = new ArrayList<>();
@@ -243,20 +243,25 @@ public class CorrectionService {
     }
 
     /**
-     * Calcule un score de qualité basé sur le nombre d'erreurs et la longueur du texte
+     * Calcule un score de qualité basé sur le nombre d'erreurs et la longueur du texte plus il y d'erreurs plus la qualité est basse
      */
-    private double calculateQualityScore(String text, int errorCount) {
-        int wordCount = text.split("\\s+").length;
+    private int calculateQualityScore(String text, int errorCount) {
+        String[] words = text.split("\\s+");
+        int wordCount = words.length;
 
-        if (wordCount == 0) return 0;
+        if (wordCount == 0) {
+            return 0; // Pas de mots, pas d'erreurs
+        }
 
         // Calcul du taux d'erreur par mot
         double errorRate = (double) errorCount / wordCount;
 
-        // Conversion en score de qualité (10 - taux d'erreur * 100)
-        // Limité entre 0 et 10
-        double score = 10 - (errorRate * 100);
-        return Math.max(0, Math.min(10, score));
+        double score = 10 - (errorRate * 10);
+
+        // Limiter le score entre 0 et 10
+        score = Math.max(0, Math.min(10, score));
+
+        return (int) Math.round(score);
     }
 
     /**
@@ -284,5 +289,23 @@ public class CorrectionService {
             log.error("Erreur lors de la désérialisation des détails de correction", e);
             return new ArrayList<>();
         }
+    }
+
+    /**
+     * Supprime une correction par son ID
+     */
+    public void deleteCorrection(UUID id) {
+        Optional<Correction> correctionOpt = correctionRepository.findById(id);
+
+        if (correctionOpt.isPresent()) {
+            correctionRepository.delete(correctionOpt.get());
+        } else {
+            throw new CorrectionException("Correction non trouvée avec l'ID: " + id);
+        }
+    }
+
+    /* Supprime toute les corrections */
+    public void deleteAllCorrections() {
+        correctionRepository.deleteAll();
     }
 }

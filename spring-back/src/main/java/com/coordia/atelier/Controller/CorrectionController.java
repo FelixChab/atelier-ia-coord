@@ -53,4 +53,16 @@ public class CorrectionController {
         List<CorrectionResponse> results = correctionService.searchCorrections(query);
         return ResponseEntity.ok(results);
     }
+
+    @DeleteMapping("/history/{id}")
+    public ResponseEntity<Void> deleteCorrection(@PathVariable UUID id) {
+        correctionService.deleteCorrection(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/history")
+    public ResponseEntity<Void> deleteAllCorrections() {
+        correctionService.deleteAllCorrections();
+        return ResponseEntity.noContent().build();
+    }
 }
