@@ -62,7 +62,7 @@ export default {
 <template>
   <div id="app">
     <header>
-      <h1>Correcteur d'orthographe et de grammaire - Français</h1>
+      <h1>CorrectIA</h1>
       <p class="tagline">Le correcteur français le moins précis au monde</p>
     </header>
 
