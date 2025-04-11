@@ -236,7 +236,7 @@ public class CorrectionService {
         } else if (lowerExplanation.contains("ponctuation") || lowerExplanation.contains("punctuation")) {
             return CorrectionType.PUNCTUATION;
         } else if (lowerExplanation.contains("syntaxe") || lowerExplanation.contains("syntax")) {
-            return CorrectionType.SYNTAX;
+            return CorrectionType.SYNONYME;
         } else {
             return CorrectionType.STYLE;
         }
