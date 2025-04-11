@@ -1,0 +1,349 @@
+.history-section {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+}
+
+h2 {
+    color: #3f51b5;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+h4 {
+    color: #424242;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.empty-history, .loading {
+    text-align: center;
+    padding: 30px;
+    color: #757575;
+    font-style: italic;
+    background-color: #f5f7ff;
+    border-radius: 8px;
+}
+
+.history-list {
+    margin-top: 20px;
+}
+
+.history-item {
+    background-color: #f5f7ff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.history-type {
+    font-weight: bold;
+    color: #3f51b5;
+    font-size: 1.1rem;
+}
+
+.history-date {
+    color: #757575;
+    font-size: 0.9rem;
+}
+
+.history-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.original-text, .corrected-text {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.original-text {
+    border-left: 4px solid #ff5252;
+}
+
+.corrected-text {
+    border-left: 4px solid #4caf50;
+}
+
+.history-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.quality-score, .error-count, .status {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.quality-score {
+    color: #3f51b5;
+    border: 1px solid #e8eaf6;
+}
+
+.error-count {
+    color: #f44336;
+    border: 1px solid #ffebee;
+}
+
+.status {
+    border: 1px solid #e0e0e0;
+}
+
+.status.success {
+    color: #4caf50;
+    border-color: #e8f5e9;
+}
+
+.status.failure {
+    color: #f44336;
+    border-color: #ffebee;
+}
+
+.correction-details {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.correction-details ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.correction-details li {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.correction-details li:last-child {
+    border-bottom: none;
+}
+
+.original {
+    color: #f44336;
+    margin-right: 5px;
+}
+
+.corrected {
+    color: #4caf50;
+    font-weight: 600;
+}
+
+.explanation {
+    display: block;
+    color: #757575;
+    font-style: italic;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.history-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+.delete-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.4);
+}
+
+.see-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.see-more-btn {
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.see-more-btn:hover {
+    background-color: #303f9f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.see-more-btn:disabled {
+    background-color: #c5cae9;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .history-section {
+        padding: 20px;
+    }
+
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .history-date {
+        margin-top: 5px;
+    }
+
+    .history-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .quality-score, .error-count, .status {
+        width: 100%;
+    }
+}
+
+
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .history-section {
+        background-color: #1e1e1e;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .see-more-btn {
+        background-color: #5c6bc0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .see-more-btn:hover {
+        background-color: #3949ab;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .see-more-btn:disabled {
+        background-color: #3f3f3f;
+    }
+
+    h2 {
+        color: #7986cb;
+    }
+
+    h4 {
+        color: #e0e0e0;
+    }
+
+    .empty-history, .loading {
+        background-color: #2d2d2d;
+        color: #b0b0b0;
+    }
+
+    .history-item {
+        background-color: #2d2d2d;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .history-header {
+        border-bottom-color: #444;
+    }
+
+    .history-type {
+        color: #7986cb;
+    }
+
+    .history-date {
+        color: #b0b0b0;
+    }
+
+    .original-text, .corrected-text, .correction-details {
+        background-color: #333;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .quality-score, .error-count, .status {
+        background-color: #333;
+        border-color: #444;
+    }
+
+    .quality-score {
+        color: #7986cb;
+    }
+
+    .error-count {
+        color: #ef9a9a;
+    }
+
+    .status.success {
+        color: #81c784;
+    }
+
+    .status.failure {
+        color: #ef9a9a;
+    }
+
+    .correction-details li {
+        border-bottom-color: #444;
+    }
+
+    .original {
+        color: #ef9a9a;
+        margin-right: 5px;
+    }
+
+    .corrected {
+        color: #81c784;
+    }
+
+    .explanation {
+        color: #b0b0b0;
+    }
+}

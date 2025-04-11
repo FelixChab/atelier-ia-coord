@@ -1,0 +1,317 @@
+.spellchecker-form {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.auto-save-status {
+    font-size: 0.8rem;
+    color: #757575;
+    margin-top: 5px;
+    font-style: italic;
+    height: 20px;
+}
+
+h2 {
+    color: #3f51b5;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #757575;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+    transition: border-color 0.3s;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
+
+.check-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input {
+    margin-right: 8px;
+}
+
+.check-button {
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 600;
+}
+
+.check-button:hover {
+    background-color: #303f9f;
+}
+
+.check-button:disabled {
+    background-color: #bdbdbd;
+    cursor: not-allowed;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.result-section {
+    background-color: #f5f7ff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 25px;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #3f51b5;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.quality-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.quality-label {
+    margin-right: 10px;
+    color: #757575;
+}
+
+.quality-dots {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.quality-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+}
+
+.quality-dot.active {
+    background-color: #4caf50;
+}
+
+.corrected-text {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #4caf50;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.correction-details {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+h4 {
+    color: #3f51b5;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.corrections-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.correction-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.correction-item:last-child {
+    border-bottom: none;
+}
+
+.correction-type {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    background-color: #e0e0e0;
+    color: #424242;
+}
+
+.correction-type.grammar {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.correction-type.spelling {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.correction-type.punctuation {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.correction-type.synonym {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.correction-content {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+}
+
+.original {
+    color: #e53935;
+    margin-right: 5px;
+}
+
+.corrected {
+    color: #43a047;
+    font-weight: 600;
+}
+
+.correction-explanation {
+    font-size: 0.9rem;
+    color: #757575;
+    font-style: italic;
+}
+
+.loading-message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .spellchecker-form {
+        padding: 20px;
+    }
+
+    .check-options {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .options-container {
+        margin-bottom: 15px;
+    }
+
+    .check-button {
+        width: 100%;
+    }
+
+    .result-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .quality-indicator {
+        margin-top: 10px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .corrected-text {
+        background-color: #424242;
+        color: #e0e0e0;
+    }
+    .spellchecker-form {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+    }
+
+    textarea {
+        background-color: #2d2d2d;
+        color: #e0e0e0;
+        border: 1px solid #424242;
+    }
+
+    textarea:focus {
+        border-color: #bb86fc;
+        box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+    }
+
+    .check-button {
+        background-color: #bb86fc;
+    }
+
+    .check-button:hover {
+        background-color: #3700b3;
+    }
+
+    .error-message {
+        background-color: #3700b3;
+        color: #bb86fc;
+    }
+
+    .result-section {
+        background-color: #1e1e1e;
+    }
+
+    .correction-type {
+        background-color: #424242;
+        color: #bb86fc;
+    }
+}
