@@ -26,7 +26,7 @@
             </div>
 
             <div class="corrected-text">
-              <h4>Texte corrigé:</h4>
+              <h4>Réponse de l'IA:</h4>
               <div v-html="formatCorrectedText(item.correctedText)"></div>
             </div>
           </div>

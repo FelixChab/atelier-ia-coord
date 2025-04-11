@@ -42,7 +42,7 @@ public class CorrectionResponse {
         SPELLING,
         GRAMMAR,
         PUNCTUATION,
-        SYNTAX,
+        SYNONYME,
         STYLE
     }
 

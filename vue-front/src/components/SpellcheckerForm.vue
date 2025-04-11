@@ -76,7 +76,7 @@
     <div v-if="!loading && result" class="result-section">
       <div class="result-header">
         <h3>Texte corrigé</h3>
-        <div class="quality-indicator">
+        <div v-if="options.checkSpelling && options.checkGrammar" class="quality-indicator">
           <span class="quality-label">Qualité:</span>
           <div class="quality-dots">
             <span
@@ -183,9 +183,10 @@ export default {
         // Prepare the payload
         const payload = {
           text: textInput.value,
-          parameters: {
-            ...options,
-          },
+          checkGrammar: options.checkGrammar,
+          checkSpelling: options.checkSpelling,
+          checkPunctuation: options.checkPunctuation,
+          suggestSynonyms: options.suggestSynonyms,
           isAutoSave, // Add this flag to indicate if it's an auto-save
         };
 

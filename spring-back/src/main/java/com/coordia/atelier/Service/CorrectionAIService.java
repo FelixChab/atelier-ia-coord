@@ -36,19 +36,35 @@ public class CorrectionAIService {
             // Ajouter des instructions pour une réponse détaillée
             promptTemplate = enhancePromptForDetailedResponse(promptTemplate, texteOriginal);
 
+            log.info("CheckGrammar: {}, CheckSpelling: {}, CheckPunctuation: {}, SuggestSynonyms: {}",
+                    checkGrammar, checkSpelling, checkPunctuation, suggestSynonyms);
             // Vérification des booléens
             if (checkGrammar) {
-                promptTemplate += "\n\nPlease check the grammar.";
+                promptTemplate += "\n\n# INSTRUCTION\n" +
+                        "First present the fully corrected grammar version\n" +
+                        "Then lists all the changes with explanations:\n" +
+                        " - \"original word/phrase\". → \"correction\": concise explanation";
             }
             if (checkSpelling) {
-                promptTemplate += "\n\nPlease check the spelling.";
+                promptTemplate += "\n\n# INSTRUCTION\n" +
+                        "First present the fully corrected orthography version\n" +
+                        "Then lists all the changes with explanations:\n" +
+                        " - \"original word/phrase\". → \"correction\": concise explanation";
             }
             if (checkPunctuation) {
-                promptTemplate += "\n\nPlease check the punctuation.";
+                promptTemplate += "\n\n# INSTRUCTION\n" +
+                        "First present the fully corrected punctuation version\n" +
+                        "Then lists all the changes with explanations:\n" +
+                        " - \"original word/phrase\". → \"correction\": concise explanation";
             }
             if (suggestSynonyms) {
-                promptTemplate += "\n\nPlease suggest synonyms.";
+                promptTemplate += "\n\n# INSTRUCTION\n" +
+                        "First present one or more synonym of the text\n" +
+                        "Then lists all the synonym with explanations:\n" +
+                        " - \"original word/phrase\". → \"synonym\": concise explanation";
             }
+
+            log.info("Prompt de correction : {}", promptTemplate);
 
             // Préparation de la requête pour OpenAI
             Map<String, Object> requestBody = new HashMap<>();
@@ -84,6 +100,7 @@ public class CorrectionAIService {
 
             // Extraction de la réponse
             String texteCorrige = extractResponseContent(response.getBody());
+
 
             // Enregistrement de l'interaction réussie
             logService.logInteraction(texteOriginal, texteCorrige, true, null);
@@ -124,6 +141,7 @@ public class CorrectionAIService {
     }
 
     private String extractResponseContent(Map responseBody) {
+        log.info("Extraction du contenu de la réponse OpenAI : {}", responseBody);
         try {
             if (responseBody != null && responseBody.containsKey("output")) {
                 List<Map<String, Object>> response = (List<Map<String, Object>>) responseBody.get("output");

@@ -46,3 +46,9 @@ Analyser le texte fourni et le corriger en respectant ces règles:
 
 3. **Suggestions de synonymes** (uniquement si suggestSynonyms=true):
    - "mot original": alternatives suggérées
+
+
+# Answer format
+1. **Corrected text**: First present the fully corrected version
+2. **List of corrections**: Then lists all the changes with explanations:
+ - "original word/phrase". → "correction": concise explanation
