@@ -74,22 +74,19 @@ correcteur-orthographique/
 
    # Configuration de la base de données
    spring.datasource.url=jdbc:mysql://localhost:3306/mysql
-   spring.datasource.username=atelier_user
-   spring.datasource.password=atelier_password
+   spring.datasource.username=user
+   spring.datasource.password=password
    spring.jpa.hibernate.ddl-auto=update
    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
    # Configuration OpenAI
    openai.api-key=votre-clé-api-openai
-   openai.api-url=https://api.openai.com/v1/chat/completions
-   openai.model=gpt-4
-   openai.temperature=0.7
-   openai.max-tokens=2000
    ```
 
    Remplacez `votre-clé-api-openai` par votre clé API OpenAI.
+   Remplacez `user` et `password` par le user et password utiliser pour la base de donnée.
 
-2. **Fichiers de prompt**
+3. **Fichiers de prompt**
 
    Créez un fichier `promptCorrecteur.txt` dans `backend/src/main/resources/prompts/` avec le contenu suivant :
 
